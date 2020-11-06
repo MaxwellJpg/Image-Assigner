@@ -1,10 +1,40 @@
 
-.img-container,
-img {
+.wrapper {
+    display: grid;
+    grid: auto-flow / 1fr 1fr;
+    grid-gap: 1em;
+}
+
+/* 
+* * IMAGE 
+*/
+.img-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+    align-items: center;
+    
+    border: 1px solid red;
+}
+
+.img-container img {
     height: 250px;
     width: auto;
+}
+
+.img-container figurecaption {
+    display: block;
+}
+/* IMAGE END */
+
+/* 
+ * * FORM 
+ */
+form {
+    border: 1px solid red;
 }
 
 form ul {
     list-style: none;
 }
+/* FORM END */
