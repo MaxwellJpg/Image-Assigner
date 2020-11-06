@@ -1,0 +1,10 @@
+
+.img-container,
+img {
+    height: 250px;
+    width: auto;
+}
+
+form ul {
+    list-style: none;
+}
