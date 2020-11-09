@@ -1,29 +1,75 @@
 
+/**
+ * COLOUR PALLET
+ * #F8E9A1
+ * #F76C6C
+ * #A8D0E6
+ * #374785
+ * #24305E
+ */
+
+body {
+    background-color: #A8D0E6;
+    color: #fff;    
+}
 .wrapper {
     display: grid;
-    grid: auto-flow / 1fr 1fr;
-    grid-gap: 1em;
+    grid-template-columns: 4fr 1fr 4fr;
+    grid-template-rows: repeat(7, 120px);
+    width: 90%;
+    margin: 5em auto;
+}
+
+/* style: figure, form and email-li */
+.wrapper > * {
+    box-shadow: 5px 5px 15px 4px #374785; 
+}
+
+ul {
+    list-style: none;
+    padding:0;
+    margin:0;
 }
 
 /* 
 * * IMAGE 
-*/
-.img-container {
+*/  
+figure {
+    z-index: 1;
+    grid-row: 1 / 4; 
+    grid-column: 1 / 3;
+
     display: flex;
     flex-direction: column;
-    justify-content: center;    
+    justify-content: center; 
     align-items: center;
-    
-    border: 1px solid red;
+    overflow: hidden;
+    background-color: #F76C6C;
 }
 
-.img-container img {
+.img-container {
     height: 250px;
-    width: auto;
+    width: 250px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+}
+.img-container:hover {
+    overflow: visible;
 }
 
-.img-container figurecaption {
+#main-img {
+    width: auto;
+    height: 100%;
+}
+
+figurecaption {
     display: block;
+    text-align: center;
+    text-transform: capitalize;
+    margin: 1em 10em 0;
 }
 /* IMAGE END */
 
@@ -31,10 +77,51 @@
  * * FORM 
  */
 form {
-    border: 1px solid red;
+    z-index: 2;
+    grid-row: 3 / 6; 
+    grid-column: 2 / 4;
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+
+    background-color: #24305E;
 }
 
-form ul {
-    list-style: none;
+.submit button {
+    width: 100px;
+    height: 40px;
+    text-transform: uppercase;
 }
+
 /* FORM END */
+
+/* EMAIL AND IMG LIST */
+.email-li {
+    z-index: 3;
+    grid-row: 5 / 8; 
+    grid-column: 1 / 3;
+
+    padding: 2em;
+    background-color: #F76C6C;
+}
+
+.email-li h3 {
+    text-align: center;
+}
+
+.sm-img-con {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sm-img-con img {
+    width: auto;
+    height: 100%;
+}

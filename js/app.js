@@ -2,21 +2,25 @@
 const url = 'https://api.unsplash.com/photos/random/' + `?client_id=${client_id}`;
 
 let emails = [];
-let imgURL;
+let imgRes = {};//Holds imgurl & alt
 
 /**
  * IIFE for unsplash requests
  * @return  {function} unsplashRequest()
  */
-let unSplashReq; (unSplashReq = () => {
-        unSplashRequest()
-            .then(results => {
+let setup; (setup = () => {
+    unSplashRequest()
+        .then(results => {
+            imgRes = results;
             embed(results);
-        });
+        })
+        .catch(err => console.error(err))
+    ;
 })()
 
 /**
- * fetches json of random img from unsplash
+ * ASYNC
+ * Fetches json of random img from unsplash
  * @return {object} 
  */
 async function unSplashRequest() {
@@ -26,7 +30,6 @@ async function unSplashRequest() {
 
     const json = await response.json();
 
-    imgURL = json.urls.full;
     return {
         imgurl: json.urls.full,
         alt: json.alt_description
@@ -38,14 +41,16 @@ async function unSplashRequest() {
  * @param  {object} results
  */
 function embed(results) {
-    $('img').attr('src', results.imgurl);
-    $('img').removeAttr('alt');
+    //add img url to src attribute of img placeholder
+    $('#main-img').attr('src', results.imgurl);
+    $('#main-img').removeAttr('alt');
 
+    //if img description exists or not
     if(results.alt) {
-        $('img').attr('alt', results.alt);
+        $('#main-img').attr('alt', results.alt);
         $('#fig-text').text(results.alt);
     } else {
-        $('img').attr('alt', 'No Description');
+        $('#main-img').attr('alt', 'No Description');
         $('#fig-text').text('No Description');
     }
 }
@@ -64,21 +69,29 @@ function validateEmail(email) {
 
 //form listener
 $('#form').on('submit', (e) => {
+    //prevent form from sumbitting and reloading
     e.preventDefault();
     let email = $('#email').val();
 
+    //if email is valid
     if (validateEmail(email)) {
         $('#email').css("border", "1px solid green");
         emailArrayPush(email);
-        unSplashReq();
-        //$(this).unbind('submit').submit();
+        imgDisplay(email);
+        setup();
+
+    //if email is not valid
     } else {
         $('#email').css("border", "1px solid red");
     }
 });
 
-//PUSH EMAIL AND ARRAY TO ARRAY
-//CHECK IF EMAIL EXISTS
+//EMAIL ARRAY
+/**
+ * Checks if email exists in array
+ * @param  {string} email
+ * @return {integer}
+ */
 function emailMatch(email) {
     if(emails.length>0) {
         for(let x=0; x<emails.length; x++) {
@@ -92,15 +105,53 @@ function emailMatch(email) {
         return -1;
     }
 }
+
+/**
+ * Push email to array if it doesnt exist
+ * Push img to array
+ * 1st value is email next values are img
+ * @param  {string} email
+ */
 function emailArrayPush(email) {
+    //emailsNo is either -1 for no match or array no if there is
     let emailsNo = emailMatch(email);
     let emailLen = emails.length;
 
-    if(emailsNo > -1) {
-        emails[emailsNo].push(imgURL);
+    if(emailsNo >= 0) {
+        //email exists so just push img
+        emails[emailsNo].push(imgRes.imgurl);
     } else {
+        //emails doesn't exist push both
         emails.push([]);
         emails[emailLen].push(email);
-        emails[emailLen].push(imgURL);
+        emails[emailLen].push(imgRes.imgurl);
+    }
+}
+
+/**
+ * Displays the 2d array in HTML
+ * Username and imgs
+ * @param  {string} email
+ */
+function imgDisplay(email) {
+    //shorten email to just username
+    let username = email.substring(0, email.indexOf('@'));
+    let $el = $('.email-list');
+    
+
+    //if email name (username) is NOT in HTML
+    if($(`#${username}`).length <= 0) {
+        $el.append(`
+            <li id="${username}">
+                ${email}
+                <div class="sm-img-con">
+                <img src="${imgRes.imgurl}" alt="${imgRes.alt}">
+                </div>
+            </li>`
+        );
+
+    //if username does exist
+    } else {
+        $(`#${username}`).append(`<div class="sm-img-con"><img src="${imgRes.imgurl}" alt="${imgRes.alt}"></div>`);
     }
 }

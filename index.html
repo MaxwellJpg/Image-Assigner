@@ -16,15 +16,16 @@
 
     <main>
         <div class="wrapper">
-            <figure class="img-container">
+            <figure>
                 <!-- url populated from unsplash fetch -->
-                <img>
+                <div class="img-container"><img id="main-img"></div>
                 <figurecaption id="fig-text">
-                    <!-- populated from unsplash fetch --> 
+                    <!-- populated from unsplash fetch -->
                 </figurecaption>
             </figure>
 
             <form name="form" action="#" id="form"> 
+                <h3>Enter Email to Assign</h3>
                 <ul>
                     <li><input type='email' name='email' id="email"/></li>
                     <li>&nbsp;</li>
@@ -32,6 +33,13 @@
                     <li>&nbsp;</li>
                 </ul>
             </form>
+
+            <div class="email-li">
+                <h3>Assigned Images</h3>
+                <ul class="email-list">
+                    <!-- List of emails and imgs assigned -->
+                </ul>
+            </div>
         </div>
     </main>
 
