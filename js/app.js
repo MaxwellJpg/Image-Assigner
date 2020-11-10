@@ -1,40 +1,29 @@
 //VARS
-const url = 'https://api.unsplash.com/photos/random/' + `?client_id=${client_id}`;
+const url = "https://api.unsplash.com/photos/random/?client_id=" + client_id;
 
 let emails = [];
 let imgRes = {};//Holds imgurl & alt
 
 /**
- * IIFE for unsplash requests
- * @return  {function} unsplashRequest()
- */
-let setup; (setup = () => {
-    unSplashRequest()
-        .then(results => {
-            imgRes = results;
-            embed(results);
-        })
-        .catch(err => console.error(err))
-    ;
-})()
-
-/**
- * ASYNC
  * Fetches json of random img from unsplash
+ * assigns to imgRes
+ * Calls function straight away
  * @return {object} 
  */
-async function unSplashRequest() {
-    const response = await fetch(url, {
-        method: 'GET',
+function unSplashRequest() {
+    $.getJSON(url)
+    .done(function (results) {
+        imgRes = {
+            imgurl: results.urls.full,
+            alt: results.alt_description
+        }
+        embed(imgRes);
+    })
+    .catch(function (err) {
+        console.error(err);
     });
-
-    const json = await response.json();
-
-    return {
-        imgurl: json.urls.full,
-        alt: json.alt_description
-    };
 }
+unSplashRequest();
 
 /**
  * Embed the results objects (url and alt)
@@ -68,7 +57,7 @@ function validateEmail(email) {
 }
 
 //form listener
-$('#form').on('submit', (e) => {
+$('#form').on('submit', function (e) {
     //prevent form from sumbitting and reloading
     e.preventDefault();
     let email = $('#email').val();
@@ -78,7 +67,7 @@ $('#form').on('submit', (e) => {
         $('#email').css("border", "1px solid green");
         emailArrayPush(email);
         imgDisplay(email);
-        setup();
+        unSplashRequest();
 
     //if email is not valid
     } else {
@@ -138,20 +127,19 @@ function imgDisplay(email) {
     let username = email.replace(/[^a-zA-Z0-9]/g, '');
     let $el = $('.email-list');
     
-
     //if email name (username) is NOT in HTML
-    if($(`#${username}`).length <= 0) {
-        $el.append(`
-            <li id="${username}">
-                ${email}
-                <div class="sm-img-con">
-                <img src="${imgRes.imgurl}" alt="${imgRes.alt}">
-                </div>
-            </li>`
+    if($('#' + username).length <= 0) {
+        $el.append(
+            '<li id="' + username + '">' +
+                email +
+                '<div class="sm-img-con">' +
+                '<img src="' +imgRes.imgurl + '" alt="' + imgRes.alt + '">' +
+                '</div>' +
+            '</li>'
         );
 
     //if username does exist
     } else {
-        $(`#${username}`).append(`<div class="sm-img-con"><img src="${imgRes.imgurl}" alt="${imgRes.alt}"></div>`);
+        $('#' + username).append('<div class="sm-img-con"><img src="'+ imgRes.imgurl + 'alt="' + imgRes.alt + '></div>');
     }
 }
