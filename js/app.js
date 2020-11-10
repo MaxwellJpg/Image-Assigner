@@ -135,7 +135,7 @@ function emailArrayPush(email) {
  */
 function imgDisplay(email) {
     //shorten email to just username
-    let username = email.substring(0, email.indexOf('@'));
+    let username = email.replace(/[^a-zA-Z0-9]/g, '');
     let $el = $('.email-list');
     
 

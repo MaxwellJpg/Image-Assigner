@@ -15,7 +15,7 @@ body {
 .wrapper {
     display: grid;
     grid-template-columns: 4fr 1fr 4fr;
-    grid-template-rows: repeat(7, 120px);
+    grid-template-rows: repeat(5, 120px) auto;
     width: 90%;
     margin: 5em auto;
 }
