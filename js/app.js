@@ -86,10 +86,9 @@ function emailMatch(email) {
         for(let x=0; x<emails.length; x++) {
             if(emails[x][0] == email){
                 return x;
-            } else {
-                return -1;
-            }
+            } 
         }
+        return -1;
     } else {
         return -1;
     }
@@ -124,13 +123,14 @@ function emailArrayPush(email) {
  */
 function imgDisplay(email) {
     //shorten email to just username
-    let username = email.replace(/[^a-zA-Z0-9]/g, '');
+    //let username = email.replace(/[^a-zA-Z0-9]/g, '');
+    let emailArrayNo = emailMatch(email);
     let $el = $('.email-list');
     
     //if email name (username) is NOT in HTML
-    if($('#' + username).length <= 0) {
+    if($('#' + emailArrayNo).length == 0) {
         $el.append(
-            '<li id="' + username + '">' +
+            '<li id="' + emailArrayNo + '">' +
                 email +
                 '<div class="sm-img-con">' +
                 '<img src="' +imgRes.imgurl + '" alt="' + imgRes.alt + '">' +
@@ -140,6 +140,6 @@ function imgDisplay(email) {
 
     //if username does exist
     } else {
-        $('#' + username).append('<div class="sm-img-con"><img src="'+ imgRes.imgurl + 'alt="' + imgRes.alt + '></div>');
+        $('#' + emailArrayNo).append('<div class="sm-img-con"><img src="'+ imgRes.imgurl + 'alt="' + imgRes.alt + '></div>');
     }
 }
