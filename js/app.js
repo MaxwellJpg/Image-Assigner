@@ -4,6 +4,9 @@ const url = "https://api.unsplash.com/photos/random/?client_id=" + client_id;
 let emails = [];
 let imgRes = {};//Holds imgurl & alt
 
+//submit button
+$btn = $('.submit button');
+
 /**
  * Fetches json of random img from unsplash
  * assigns to imgRes
@@ -18,6 +21,8 @@ function unSplashRequest() {
             alt: results.alt_description
         }
         embed(imgRes);
+        //reenables button after fetch
+        $btn.attr("disabled", false);
     })
     .catch(function (err) {
         console.error(err);
@@ -65,6 +70,8 @@ $('#form').on('submit', function (e) {
     //if email is valid
     if (validateEmail(email)) {
         $('#email').css("border", "1px solid green");
+        //disables button after successful submition
+        $btn.attr("disabled", true);
         emailArrayPush(email);
         imgDisplay(email);
         unSplashRequest();
@@ -122,9 +129,8 @@ function emailArrayPush(email) {
  * @param  {string} email
  */
 function imgDisplay(email) {
-    //shorten email to just username
-    //let username = email.replace(/[^a-zA-Z0-9]/g, '');
-    let emailArrayNo = emailMatch(email);
+    //returns array no of the email
+    let emailArrayNo = emailMatch(email); 
     let $el = $('.email-list');
     
     //if email name (username) is NOT in HTML
